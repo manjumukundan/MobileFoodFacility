@@ -6,12 +6,10 @@
 
 <script>
 import MapComponent from './components/MapComponent.vue'
-//import GoogleMapComponent from './components/GoogleMapComponent.vue'
 export default {
   name: 'App',
   components: {
     MapComponent,
-    //GoogleMapComponent
   }
 }
 </script>
