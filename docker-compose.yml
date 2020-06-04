@@ -1,0 +1,23 @@
+version: '3'
+services:
+  app-service:
+    image: app-service:1
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - /data/app-service
+    ports:
+      - "8080:8080"
+
+  app-client:
+    image:  app-client:1
+    build:
+      context: ./user-interface
+      dockerfile: Dockerfile
+    volumes:
+      - /data/app-client
+    depends_on:
+      - app-service
+    ports:
+      - "8081:8080"
