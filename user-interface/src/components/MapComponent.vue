@@ -9,11 +9,7 @@
 <script>
     import {gmapApi} from 'vue2-google-maps'
     import api from '../api'
-    import Vue from 'vue'
-    import {VTooltip, VPopover} from 'v-tooltip'
 
-    Vue.directive('tooltip', VTooltip)
-    Vue.component('v-popover', VPopover)
     export default {
         name: "MapComponent",
         computed: {

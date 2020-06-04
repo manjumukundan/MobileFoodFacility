@@ -2,12 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import JQuery from 'jquery'
 window.$ = JQuery
-require('jquery')
 import 'bootstrap/dist/css/bootstrap.css'
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faTruck } from "@fortawesome/free-solid-svg-icons";
-library.add(faTruck);
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
 import * as VueGoogleMaps from "vue2-google-maps";
 Vue.use(VueGoogleMaps, {
   load: {
@@ -15,10 +11,6 @@ Vue.use(VueGoogleMaps, {
     installComponents: true
   }
 });
-import BootstrapVue from 'bootstrap-vue';
-Vue.use(BootstrapVue)
-
-Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
 
 new Vue({
