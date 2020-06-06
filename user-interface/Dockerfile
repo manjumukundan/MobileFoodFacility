@@ -12,6 +12,8 @@ COPY package*.json ./
 # install project dependencies
 RUN  npm config set registry https://registry.npmjs.com/
 RUN npm run clean
+RUN rm -rf package-lock.json
+RUN npm cache clean --force
 RUN npm i
 #
 ## copy project files and folders to the current working directory (i.e. 'app' folder)

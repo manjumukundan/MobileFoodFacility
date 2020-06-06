@@ -1,7 +1,7 @@
 <template>
     <gmap-map ref="mapRef" id="map"
               :center="currentLocation"
-              :zoom="18"
+              :zoom="15"
               style="width:100%;  height: 100vh;">
     </gmap-map>
 </template>
@@ -14,8 +14,11 @@
         name: "MapComponent",
         computed: {
             google: gmapApi,
-            markerImage() {
+            foodTruckImage() {
                 return require('../assets/images/food-truck.png');
+            },
+            pushCartImage() {
+                return require('../assets/images/push-cart.png');
             }
         },
         data() {
@@ -45,7 +48,7 @@
                     };
 
                     this.map = new this.google.maps.Map(document.getElementById('map'), {
-                        zoom: 18,
+                        zoom: 17,
                         center: new this.google.maps.LatLng(this.currentLocation.lat, this.currentLocation.lng)
                     });
                     let infowindow = new this.google.maps.InfoWindow({
@@ -60,7 +63,7 @@
                     marker.addListener('click', function () {
                         infowindow.open(this.map, marker);
                     });
-                    this.findFoodTrucks(marker);
+                    this.findFoodTrucks(this.currentLocation);
                 });
             },
             findFoodTrucks(position) {
@@ -72,12 +75,18 @@
                                 let infowindow = new this.google.maps.InfoWindow({
                                     content: item.address
                                 });
+                                let image;
+                                if(item.type == 'Push Cart'){
+                                    image = this.pushCartImage;
+                                } else {
+                                    image = this.foodTruckImage;
+                                }
                                 let marker = new this.google.maps.Marker({
                                     position: new this.google.maps.LatLng(item.latitude, item.longitude),
                                     map: this.map,
                                     title: item.name,
                                     icon: {
-                                        url: this.markerImage,
+                                        url: image,
                                         origin: new this.google.maps.Point(0, 0),
                                         anchor: new this.google.maps.Point(17, 34),
                                         scaledSize: new this.google.maps.Size(30, 30, 0, 0)

@@ -1,5 +1,7 @@
 package com.project.mobile.food.facility.model;
 
+import org.gavaghan.geodesy.*;
+
 import java.util.Comparator;
 
 public class FoodTruck {
@@ -13,8 +15,8 @@ public class FoodTruck {
     private String items;
     private String x;
     private String y;
-    private String latitude;
-    private String longitude;
+    private Double latitude;
+    private Double longitude;
     private String schedule;
     private String scheduleUrl;
 
@@ -108,19 +110,19 @@ public class FoodTruck {
         this.y = y;
     }
 
-    public String getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
@@ -140,15 +142,78 @@ public class FoodTruck {
         this.scheduleUrl = scheduleUrl;
     }
 
+    public static double doHaversineAlgorithm(double lat1, double lon1, double lat2, double lon2)
+    {
+        // distance between latitudes and longitudes
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
 
-    public static class FoodTruckComparator implements Comparator<FoodTruck> {
+        // convert to radians
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+
+        // apply formulae
+        double a = Math.pow(Math.sin(dLat / 2), 2) +
+                Math.pow(Math.sin(dLon / 2), 2) * Math.cos(lat1) * Math.cos(lat2);
+
+        double rad = 6371;
+        double c = 2 * Math.asin(Math.sqrt(a));
+        return rad * c;
+    }
+
+    public static double doVincentysAlgorithm(Double latitude, Double longitude){
+        GeodeticCalculator geoCalc = new GeodeticCalculator();
+
+        Ellipsoid reference = Ellipsoid.WGS84;
+
+        GlobalPosition pointA = new GlobalPosition(0.0, 0.0, 0.0); // Point A
+
+        GlobalPosition userPos = new GlobalPosition(latitude, latitude, 0.0); // Point B
+
+        return geoCalc.calculateGeodeticCurve(reference, userPos, pointA).getEllipsoidalDistance();
+    }
+
+    public static class FoodTruckComparatorHaversine implements Comparator<FoodTruck> {
+
+        Double lat = 0.0;
+        Double lng = 0.0;
+
+        public FoodTruckComparatorHaversine(Double latitude, Double longitude) {
+            this.lat = latitude;
+            this.lng = longitude;
+        }
 
         @Override
         public int compare(FoodTruck o1, FoodTruck o2) {
-            Double d1 = o1.getDistance();
-            Double d2 = o2.getDistance();
+            Double d1Lat = Double.valueOf(o1.getLatitude());
+            Double d1Lng = Double.valueOf(o1.getLongitude());
+            Double d2Lat = Double.valueOf(o2.getLatitude());
+            Double d2Lng = Double.valueOf(o2.getLongitude());
 
-            return d1.compareTo(d2);
+            Double distance1 = doHaversineAlgorithm(lat, lng, d1Lat, d1Lng);
+            o1.setDistance(distance1);
+            Double distance2 = doHaversineAlgorithm(lat, lng, d2Lat, d2Lng);
+            o2.setDistance(distance2);
+
+            return distance1.compareTo(distance2);
+        }
+    }
+
+    public static class FoodTruckComparatorVincentys implements Comparator<FoodTruck> {
+
+        @Override
+        public int compare(FoodTruck o1, FoodTruck o2) {
+            Double d1Lat = Double.valueOf(o1.getLatitude());
+            Double d1Lng = Double.valueOf(o1.getLongitude());
+            Double d2Lat = Double.valueOf(o2.getLatitude());
+            Double d2Lng = Double.valueOf(o2.getLongitude());
+
+            Double distance1 = doVincentysAlgorithm(d1Lat, d1Lng);
+            o1.setDistance(distance1);
+            Double distance2 = doVincentysAlgorithm(d2Lat, d2Lng);
+            o2.setDistance(distance2);
+
+            return distance1.compareTo(distance2);
         }
     }
 

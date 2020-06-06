@@ -3,51 +3,92 @@ package com.project.mobile.food.facility.core;
 import com.project.mobile.food.facility.model.FoodTruck;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class NearestFoodTrucks {
 
-    public List<FoodTruck> findNearestTrucks(List<FoodTruck> csvList) {
+    Double currLatitude;
+    Double currLongitude;
 
-        List<FoodTruck> result = new ArrayList<>();
+    public List<FoodTruck> findNearestTrucks(List<FoodTruck> csvList, String latitude, String longitude) {
+        currLatitude = Double.valueOf(latitude);
+        currLongitude = Double.valueOf(longitude);
 
-        double fromLat = 37.792252;
-        double fromLon = -122.403793;
-        for(FoodTruck truck : csvList){
-            Double distance = doHaversineAlgorithm(fromLat, fromLon,
-                    Double.valueOf(truck.getLatitude()), Double.valueOf(truck.getLongitude()));
-            truck.setDistance(distance);
-        }
-        Collections.sort(csvList, new FoodTruck.FoodTruckComparator());
-        for(FoodTruck truck : csvList){
-            result.add(truck);
-//            if(result.size() == 10)
+//        List<FoodTruck> csvList1 = new ArrayList<>(csvList);
+//        Collections.sort(csvList1, new FoodTruck.FoodTruckComparatorHaversine(currLatitude, currLongitude));
+//        List<FoodTruck> res = new ArrayList<>();
+//        for (FoodTruck t: csvList1) {
+//            res.add(t);
+//            if(res.size() == 50)
 //                break;
-        }
-        return result;
+//        }
+
+
+        List<FoodTruck> csvList2 = new ArrayList<>(csvList);
+        Collections.sort(csvList2, new FoodTruck.FoodTruckComparatorVincentys());
+        double dist = FoodTruck.doVincentysAlgorithm(currLatitude, currLongitude);
+        int k = 50;
+
+        List<FoodTruck> ans = doBinarySearch(csvList2, dist, k);
+
+        return ans;
+
     }
 
-    double doHaversineAlgorithm(double lat1, double lon1,
-                     double lat2, double lon2)
-    {
-        // distance between latitudes and longitudes
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
+    private List<FoodTruck> doBinarySearch(List<FoodTruck> csvList, Double distance, int k) {
+        int l = 0, r = csvList.size() - 1, m = -1;
+        while (r >= l) {
+            m = l + (r - l) / 2;
+            Double mDist = csvList.get(m).getDistance();
+            if (mDist.equals(distance)) {
+                break;
+            } else if (mDist > distance) {
+                r = m - 1;
+            } else {
+                l = m + 1;
+            }
 
-        // convert to radians
-        lat1 = Math.toRadians(lat1);
-        lat2 = Math.toRadians(lat2);
+        }
+        List<FoodTruck> res = new ArrayList<>();
 
-        // apply formulae
-        double a = Math.pow(Math.sin(dLat / 2), 2) +
-                Math.pow(Math.sin(dLon / 2), 2) *
-                        Math.cos(lat1) *
-                        Math.cos(lat2);
-        double rad = 6371;
-        double c = 2 * Math.asin(Math.sqrt(a));
-        return rad * c;
+        int f = r;
+        int e = l;
+
+        while (res.size() != k && f > -1 && e < csvList.size()) {
+            FoodTruck truckF = csvList.get(f);
+            FoodTruck truckE = csvList.get(e);
+            Double distF = FoodTruck.doVincentysAlgorithm(truckF.getLatitude(), truckF.getLongitude());
+            Double distE = FoodTruck.doVincentysAlgorithm(truckE.getLatitude(), truckE.getLongitude());
+
+            Double diff1 = Math.abs(distance - distF);
+            Double diff2 = Math.abs(distance - distE);
+
+            if (diff1 <= diff2) {
+                res.add(csvList.get(f));
+                f--;
+            } else {
+                res.add(csvList.get(e));
+                e++;
+            }
+        }
+
+        if (res.size() == k)
+            return res;
+        else {
+            if (f > -1) {
+                int i = csvList.size() - k;
+                while (i < csvList.size()) {
+                    res.add(csvList.get(i++));
+                }
+            } else {
+                int i = 0;
+                while (i < k) {
+                    res.add(csvList.get(i++));
+                }
+            }
+        }
+
+        return res;
     }
 }

@@ -4,10 +4,7 @@ import com.project.mobile.food.facility.core.NearestFoodTrucks;
 import com.project.mobile.food.facility.csvreader.CsvReader;
 import com.project.mobile.food.facility.model.FoodTruck;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,8 +17,9 @@ public class ServiceController {
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @RequestMapping(method = RequestMethod.GET, value="/findfoodtrucks")
-    public List<FoodTruck> getFoodTrucks() throws IOException {
+    public List<FoodTruck> getFoodTrucks(@RequestParam("lat") String latitude,
+                                         @RequestParam("lng") String longitude) throws IOException {
         List<FoodTruck> csvList = CsvReader.processCSV("/static/data.csv");
-        return nearestFoodTrucks.findNearestTrucks(csvList);
+        return nearestFoodTrucks.findNearestTrucks(csvList, latitude, longitude);
     }
 }

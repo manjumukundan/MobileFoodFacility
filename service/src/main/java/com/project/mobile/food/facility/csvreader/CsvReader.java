@@ -26,7 +26,7 @@ public class CsvReader {
         List<FoodTruck> trucks = new ArrayList<FoodTruck>();
         //Read CSV line by line and use the string array as you want
         for(String[] row : allRows){
-            if(row[10].equals("APPROVED")){
+            if(row[10].equals("APPROVED") && !row[14].equals("0") && !row[15].equals("0")){
                 FoodTruck truck = new FoodTruck();
                 truck.setId(row[0]);
                 truck.setName(row[1]);
@@ -36,8 +36,8 @@ public class CsvReader {
                 truck.setLot(row[8]);
                 truck.setStatus(row[10]);
                 truck.setItems(row[11]);
-                truck.setLatitude(row[14]);
-                truck.setLongitude(row[15]);
+                truck.setLatitude(Double.valueOf(row[14]));
+                truck.setLongitude(Double.valueOf(row[15]));
                 truck.setSchedule(row[16]);
                 trucks.add(truck);
             }
