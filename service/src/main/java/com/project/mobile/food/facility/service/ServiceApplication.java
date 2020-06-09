@@ -11,7 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 import java.io.IOException;
 
-
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 @ComponentScan("com.project.mobile.food.facility")
 public class ServiceApplication {

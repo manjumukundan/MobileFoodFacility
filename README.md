@@ -64,4 +64,8 @@ The application is run on localhost.
 
           # build tests and run tests
           mvn clean test
-        
+         
+### TroubleShooting      
+
+* Make sure you are not in any vpn, as npm install might fail due to timeout.
+* Confirm that .npmrc file has proper registry urls. eg: https://registry.npmjs.com/

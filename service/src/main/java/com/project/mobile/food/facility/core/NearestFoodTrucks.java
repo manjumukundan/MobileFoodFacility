@@ -22,28 +22,28 @@ public class NearestFoodTrucks {
     }
 
     public List<FoodTruck> findNearestTrucks(List<FoodTruck> csvList, String latitude, String longitude, int count) {
-        currLatitude = Double.valueOf(latitude);
-        currLongitude = Double.valueOf(longitude);
-
-        Location mid = midPoint(csvList);
 
         if(csvList.size() <= count)
             return csvList;
 
+        currLatitude = Double.valueOf(latitude);
+        currLongitude = Double.valueOf(longitude);
+
+        // find mid point of all the available points.
+        Location mid = midPoint(csvList);
+
         Double radius = FoodTruck.doHaversineAlgorithm(currLatitude, currLongitude, mid.latitude, mid.longitude);
 
-        // set to remove equal objects that have same latitude and longitude.
+        // set to remove equal objects that have same latitude and longitude, filtering out those.
         Set<FoodTruck> set = new HashSet<>();
         for(FoodTruck t : csvList) {
             set.add(t);
         }
 
         List<FoodTruck> list = new ArrayList<>();
-        for(FoodTruck t : set) {
-            list.add(t);
-        }
+        list.addAll(set);
 
-
+        // find all points inside and on circle of radius
         List<FoodTruck> res = new ArrayList<>();
         for (FoodTruck truck : list) {
             Double dist = FoodTruck.doHaversineAlgorithm(currLatitude, currLongitude, truck.getLatitude(), truck.getLongitude());
@@ -52,8 +52,8 @@ public class NearestFoodTrucks {
             }
         }
 
+        // if the count of points is greater than what is required, reduce the dataset by reducing radius.
         if(res.size() > count) {
-            // try to reduce dataset
             radius = radius / 2;
             list = new ArrayList<>(res);
             res.clear();
@@ -73,6 +73,8 @@ public class NearestFoodTrucks {
                 }
             }
         } else {
+            // if the count of points is lesser than what is required,
+            // increase the dataset by reducing radius to see if there is more
             radius = radius * 2;
             list = new ArrayList<>(res);
             res.clear();
@@ -93,11 +95,12 @@ public class NearestFoodTrucks {
             }
         }
 
-        // i can sort this list to retrieve exact count.
+        // can sort this list to retrieve exact count.
         return list;
 
+        // Sort list based on distance between points and user location and then get first count.
 //        List<FoodTruck> csvList1 = new ArrayList<>(csvList);
-//        Collections.sort(csvList1, new FoodTruck.FoodTruckComparatorEuclidean(currLatitude, currLongitude));
+//        Collections.sort(csvList1, new FoodTruck.FoodTruckComparatorHaversine(currLatitude, currLongitude));
 //        List<FoodTruck> res = new ArrayList<>();
 //        for (FoodTruck t: csvList1) {
 //            res.add(t);
@@ -107,6 +110,8 @@ public class NearestFoodTrucks {
 //        return res;
 
 
+
+        // Sort list based on distance between relative distances of points and user location.
 //        List<FoodTruck> csvList2 = new ArrayList<>(csvList);
 //        Collections.sort(csvList2, new FoodTruck.FoodTruckComparatorEuclidean(0.0, 0.0));
 //
@@ -148,64 +153,59 @@ public class NearestFoodTrucks {
         return new Location(centralLatitude * 180 / Math.PI, centralLongitude * 180 / Math.PI);
     }
 
-    /*private List<FoodTruck> doBinarySearch(List<FoodTruck> csvList, Double distance, int k) {
-        int l = 0, r = csvList.size() - 1, m = -1;
-        while (r >= l) {
-            m = l + (r - l) / 2;
-            Double mDist = csvList.get(m).getDistance();
-            if (mDist.equals(distance)) {
-                break;
-            } else if (mDist > distance) {
-                r = m - 1;
-            } else {
-                l = m + 1;
-            }
-
-        }
-        List<FoodTruck> res = new ArrayList<>();
-
-        int f = r;
-        int e = l;
-
-        while (res.size() != k && f > -1 && e < csvList.size()) {
-            FoodTruck truckF = csvList.get(f);
-            FoodTruck truckE = csvList.get(e);
+//    private List<FoodTruck> doBinarySearch(List<FoodTruck> csvList, Double distance, int k) {
+//        int l = 0, r = csvList.size() - 1, m = -1;
+//        while (r >= l) {
+//            m = l + (r - l) / 2;
+//            Double mDist = csvList.get(m).getDistance();
+//            if (mDist.equals(distance)) {
+//                break;
+//            } else if (mDist > distance) {
+//                r = m - 1;
+//            } else {
+//                l = m + 1;
+//            }
+//
+//        }
+//        List<FoodTruck> res = new ArrayList<>();
+//
+//        int f = r;
+//        int e = l;
+//
+//        while (res.size() != k && f > -1 && e < csvList.size()) {
+//            FoodTruck truckF = csvList.get(f);
+//            FoodTruck truckE = csvList.get(e);
 //            Double distF = FoodTruck.doHaversineAlgorithm(currLatitude, currLongitude, truckF.getLatitude(), truckF.getLongitude());
 //            Double distE = FoodTruck.doHaversineAlgorithm(currLatitude, currLongitude, truckE.getLatitude(), truckE.getLongitude());
-
-            Double distF = Math.sqrt((truckF.getLatitude() - currLatitude) * (truckF.getLatitude() - currLatitude)
-                    + (truckF.getLongitude() - currLongitude) * (truckF.getLongitude() - currLongitude));
-            Double distE = Math.sqrt((truckE.getLatitude() - currLatitude) * (truckE.getLatitude() - currLatitude)
-                    + (truckE.getLongitude() - currLongitude) * (truckE.getLongitude() - currLongitude));
-
-            Double diff1 = Math.abs(distance - distF);
-            Double diff2 = Math.abs(distance - distE);
-
-            if (diff1 <= diff2) {
-                res.add(csvList.get(f));
-                f--;
-            } else {
-                res.add(csvList.get(e));
-                e++;
-            }
-        }
-
-        if (res.size() == k)
-            return res;
-        else {
-            if (f > -1) {
-                int i = csvList.size() - k;
-                while (i < csvList.size()) {
-                    res.add(csvList.get(i++));
-                }
-            } else {
-                int i = 0;
-                while (i < csvList.size() && i < k) {
-                    res.add(csvList.get(i++));
-                }
-            }
-        }
-
-        return res;
-    } */
+//
+//            Double diff1 = Math.abs(distance - distF);
+//            Double diff2 = Math.abs(distance - distE);
+//
+//            if (diff1 <= diff2) {
+//                res.add(csvList.get(f));
+//                f--;
+//            } else {
+//                res.add(csvList.get(e));
+//                e++;
+//            }
+//        }
+//
+//        if (res.size() == k)
+//            return res;
+//        else {
+//            if (f > -1) {
+//                int i = csvList.size() - k;
+//                while (i < csvList.size()) {
+//                    res.add(csvList.get(i++));
+//                }
+//            } else {
+//                int i = 0;
+//                while (i < csvList.size() && i < k) {
+//                    res.add(csvList.get(i++));
+//                }
+//            }
+//        }
+//
+//        return res;
+//    }
 }

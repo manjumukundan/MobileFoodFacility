@@ -16,15 +16,13 @@ public class CsvReader {
 
     public static List<FoodTruck> processCSV(String filename) throws IOException {
 
-        //Build reader instance
         CSVReader reader = new CSVReader(new InputStreamReader(CsvReader.class.getResourceAsStream(filename),
                         "UTF-8"));
 
-        //Read all rows at once
+        //Read all data.
         List<String[]> allRows = reader.readAll();
 
         List<FoodTruck> trucks = new ArrayList<FoodTruck>();
-        //Read CSV line by line and use the string array as you want
         for(String[] row : allRows){
             if(row[10].equals("APPROVED") && !row[14].equals("0") && !row[15].equals("0")){
                 FoodTruck truck = new FoodTruck();

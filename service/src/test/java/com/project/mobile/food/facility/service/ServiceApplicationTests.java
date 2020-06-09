@@ -58,7 +58,7 @@ class ServiceApplicationTest {
 	@Test
 	public void testFindNearestTrucks1() throws IOException {
 		NearestFoodTrucks nearestFoodTrucks = new NearestFoodTrucks();
-		List<FoodTruck> ans = nearestFoodTrucks.findNearestTrucks(list, "37.792252", "-122.403793", 3);
+		List<FoodTruck> ans = nearestFoodTrucks.findNearestTrucks(list, "37.792252", "-122.403793", 2);
 		assertTrue(ans.size() >= 3);
 		assertTrue(containsList(37.7922616341775, -122.403485955391)); // "id": "1181500", "name": "John's Catering #5",
 	}
@@ -66,7 +66,7 @@ class ServiceApplicationTest {
 	@Test
 	public void testFindNearestTrucks2() throws IOException {
 		NearestFoodTrucks nearestFoodTrucks = new NearestFoodTrucks();
-		List<FoodTruck> ans = nearestFoodTrucks.findNearestTrucks(list, "37.793929", "122.394476", 3);
+		List<FoodTruck> ans = nearestFoodTrucks.findNearestTrucks(list, "37.793929", "122.394476", 2);
 		assertTrue(ans.size() >= 3);
 		assertTrue(containsList(37.7938715071506, -122.394865238621)); // "id": "1181498","name": "John's Catering #5",
 
@@ -75,8 +75,8 @@ class ServiceApplicationTest {
 	@Test
 	public void testFindNearestTrucks3() throws IOException {
 		NearestFoodTrucks nearestFoodTrucks = new NearestFoodTrucks();
-		List<FoodTruck> ans = nearestFoodTrucks.findNearestTrucks(list, "37.784822", "-122.3914947", 3);
-		assertTrue(ans.size() >= 3);
+		List<FoodTruck> ans = nearestFoodTrucks.findNearestTrucks(list, "37.784822", "-122.3914947", 2);
+		assertTrue(ans.size() >= 2);
 		assertTrue(containsList(37.7860625210972, -122.392176463949));// "id": "947734", "name": "Halal Cart of San Francisco",
 	}
 
