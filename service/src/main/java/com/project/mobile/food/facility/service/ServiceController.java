@@ -13,13 +13,17 @@ import java.util.List;
 public class ServiceController {
 
     @Autowired
+    CsvReader csvReader;
+
+    @Autowired
     NearestFoodTrucks nearestFoodTrucks;
 
     @CrossOrigin(origins = "*", allowedHeaders = "*")
     @RequestMapping(method = RequestMethod.GET, value="/findfoodtrucks")
     public List<FoodTruck> getFoodTrucks(@RequestParam("lat") String latitude,
-                                         @RequestParam("lng") String longitude) throws IOException {
-        List<FoodTruck> csvList = CsvReader.processCSV("/static/data.csv");
-        return nearestFoodTrucks.findNearestTrucks(csvList, latitude, longitude);
+                                         @RequestParam("lng") String longitude,
+                                         @RequestParam("count") String count) throws IOException {
+        List<FoodTruck> csvList = csvReader.processCSV("/static/data.csv");
+        return nearestFoodTrucks.findNearestTrucks(csvList, latitude, longitude, Integer.valueOf(count));
     }
 }

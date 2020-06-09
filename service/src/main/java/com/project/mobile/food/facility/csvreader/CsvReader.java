@@ -39,6 +39,7 @@ public class CsvReader {
                 truck.setLatitude(Double.valueOf(row[14]));
                 truck.setLongitude(Double.valueOf(row[15]));
                 truck.setSchedule(row[16]);
+                truck.setLocation(row[23]);
                 trucks.add(truck);
             }
         }

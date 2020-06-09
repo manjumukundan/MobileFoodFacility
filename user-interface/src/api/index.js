@@ -12,8 +12,9 @@ const headers = {
 }
 
 const api = {
-    findFoodTrucks(position) {
-        return instance.get('/findfoodtrucks?lat=' + position.lat + '&lng=' + position.lng, headers);
+    findFoodTrucks(position, count) {
+        return instance.get('/findfoodtrucks?lat=' + position.lat + '&lng=' + position.lng
+            + '&count=' + count, headers);
     }
 };
 

@@ -17,6 +17,7 @@ public class FoodTruck {
     private String y;
     private Double latitude;
     private Double longitude;
+    private String location;
     private String schedule;
     private String scheduleUrl;
 
@@ -126,6 +127,14 @@ public class FoodTruck {
         this.longitude = longitude;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public String getSchedule() {
         return schedule;
     }
@@ -161,16 +170,55 @@ public class FoodTruck {
         return rad * c;
     }
 
-    public static double doVincentysAlgorithm(Double latitude, Double longitude){
-        GeodeticCalculator geoCalc = new GeodeticCalculator();
+    public static class FoodTruckComparatorEuclidean implements Comparator<FoodTruck> {
 
-        Ellipsoid reference = Ellipsoid.WGS84;
+        Double lat = 0.0;
+        Double lng = 0.0;
 
-        GlobalPosition pointA = new GlobalPosition(0.0, 0.0, 0.0); // Point A
+        public FoodTruckComparatorEuclidean(Double latitude, Double longitude) {
+            this.lat = latitude;
+            this.lng = longitude;
+        }
 
-        GlobalPosition userPos = new GlobalPosition(latitude, latitude, 0.0); // Point B
+        @Override
+        public int compare(FoodTruck o1, FoodTruck o2) {
+            Double d1Lat = Double.valueOf(o1.getLatitude());
+            Double d1Lng = Double.valueOf(o1.getLongitude());
+            Double d2Lat = Double.valueOf(o2.getLatitude());
+            Double d2Lng = Double.valueOf(o2.getLongitude());
 
-        return geoCalc.calculateGeodeticCurve(reference, userPos, pointA).getEllipsoidalDistance();
+
+            Double distance1 = Math.sqrt((d1Lat - lat) * (d1Lat - lat) + (d1Lng - lng) * (d1Lng - lng));
+            o1.setDistance(distance1);
+            Double distance2 =  Math.sqrt((d2Lat - lat) * (d2Lat - lat) + (d2Lng - lng) * (d2Lng - lng));
+            o2.setDistance(distance2);
+
+            return distance1.compareTo(distance2);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof FoodTruck)) {
+            return false;
+        }
+
+        FoodTruck c = (FoodTruck) o;
+
+        return Double.compare(latitude, c.latitude) == 0
+                && Double.compare(longitude, c.longitude) == 0;
+
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return 0;
     }
 
     public static class FoodTruckComparatorHaversine implements Comparator<FoodTruck> {
@@ -193,24 +241,6 @@ public class FoodTruck {
             Double distance1 = doHaversineAlgorithm(lat, lng, d1Lat, d1Lng);
             o1.setDistance(distance1);
             Double distance2 = doHaversineAlgorithm(lat, lng, d2Lat, d2Lng);
-            o2.setDistance(distance2);
-
-            return distance1.compareTo(distance2);
-        }
-    }
-
-    public static class FoodTruckComparatorVincentys implements Comparator<FoodTruck> {
-
-        @Override
-        public int compare(FoodTruck o1, FoodTruck o2) {
-            Double d1Lat = Double.valueOf(o1.getLatitude());
-            Double d1Lng = Double.valueOf(o1.getLongitude());
-            Double d2Lat = Double.valueOf(o2.getLatitude());
-            Double d2Lng = Double.valueOf(o2.getLongitude());
-
-            Double distance1 = doVincentysAlgorithm(d1Lat, d1Lng);
-            o1.setDistance(distance1);
-            Double distance2 = doVincentysAlgorithm(d2Lat, d2Lng);
             o2.setDistance(distance2);
 
             return distance1.compareTo(distance2);

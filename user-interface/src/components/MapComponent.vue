@@ -1,9 +1,12 @@
 <template>
-    <gmap-map ref="mapRef" id="map"
-              :center="currentLocation"
-              :zoom="15"
-              style="width:100%;  height: 100vh;">
-    </gmap-map>
+    <div>
+        <gmap-map ref="mapRef" id="map"
+                  :center="currentLocation"
+                  :zoom="16"
+                  style="width:100%;  height: 100vh;">
+        </gmap-map>
+    </div>
+
 </template>
 
 <script>
@@ -27,7 +30,8 @@
                 markers: [],
                 places: [],
                 currentPlace: null,
-                map: null
+                map: null,
+                count: 10
             };
         },
 
@@ -48,7 +52,7 @@
                     };
 
                     this.map = new this.google.maps.Map(document.getElementById('map'), {
-                        zoom: 17,
+                        zoom: 16,
                         center: new this.google.maps.LatLng(this.currentLocation.lat, this.currentLocation.lng)
                     });
                     let infowindow = new this.google.maps.InfoWindow({
@@ -67,7 +71,7 @@
                 });
             },
             findFoodTrucks(position) {
-                api.findFoodTrucks(position).then((response) => {
+                api.findFoodTrucks(position, this.count).then((response) => {
                     if (response && response.data) {
                         let trucks = response.data;
                         if (trucks && trucks.length > 0) {
