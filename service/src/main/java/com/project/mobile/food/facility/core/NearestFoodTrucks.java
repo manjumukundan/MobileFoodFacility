@@ -54,45 +54,33 @@ public class NearestFoodTrucks {
 
         // if the count of points is greater than what is required, reduce the dataset by reducing radius.
         if(res.size() > count) {
-            radius = radius / 2;
-            list = new ArrayList<>(res);
-            res.clear();
-            while(list.size() >= count){
-                for (FoodTruck truck : list) {
-                    Double dist = FoodTruck.doHaversineAlgorithm(currLatitude, currLongitude, truck.getLatitude(), truck.getLongitude());
-                    if (dist <= radius ) {
-                        res.add(truck);
-                    }
-                }
-                if(res.size() >= count){
-                    radius = radius / 2;
-                    list = new ArrayList<>(res);
-                    res.clear();
-                } else {
-                    break;
-                }
-            }
-        } else {
-            // if the count of points is lesser than what is required,
-            // increase the dataset by reducing radius to see if there is more
-            radius = radius * 2;
-            list = new ArrayList<>(res);
-            res.clear();
-            while(list.size() < count) {
+            while(res.size() >= count){
+                radius = radius / 2;
+                list = new ArrayList<>(res);
+                res.clear();
                 for (FoodTruck truck : list) {
                     Double dist = FoodTruck.doHaversineAlgorithm(currLatitude, currLongitude, truck.getLatitude(), truck.getLongitude());
                     if (dist <= radius) {
                         res.add(truck);
                     }
                 }
-                if (res.size() < count) {
-                    radius = radius / 2;
-                    list = new ArrayList<>(res);
-                    res.clear();
-                } else {
-                    break;
+            }
+        } else if(res.size() < count) {
+            // if the count of points is lesser than what is required,
+            // increase the dataset by reducing radius to see if there is more
+            while(res.size() < count){
+                radius = radius * 2;
+                list = new ArrayList<>(res);
+                res.clear();
+                for (FoodTruck truck : list) {
+                    Double dist = FoodTruck.doHaversineAlgorithm(currLatitude, currLongitude, truck.getLatitude(), truck.getLongitude());
+                    if (dist <= radius) {
+                        res.add(truck);
+                    }
                 }
             }
+        } else {
+            return res;
         }
 
         // can sort this list to retrieve exact count.
