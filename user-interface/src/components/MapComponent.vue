@@ -31,7 +31,7 @@
                 places: [],
                 currentPlace: null,
                 map: null,
-                count: 10
+                count: 5
             };
         },
 

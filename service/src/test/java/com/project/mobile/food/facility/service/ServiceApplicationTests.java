@@ -5,6 +5,7 @@ import com.project.mobile.food.facility.model.FoodTruck;
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.junit.internal.runners.JUnit38ClassRunner;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -22,8 +23,8 @@ import java.util.List;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
-@RunWith(MockitoJUnitRunner.class)
-class ServiceApplicationTests {
+@RunWith(JUnit38ClassRunner.class)
+class ServiceApplicationTest {
 	static List<FoodTruck> list = new ArrayList<>();
 
 	@BeforeAll
@@ -31,7 +32,7 @@ class ServiceApplicationTests {
 		JSONParser parser = new JSONParser();
 
 		try {
-			File file = ResourceUtils.getFile(ServiceApplicationTests.class.getClass().getResource("/test-data.json"));
+			File file = ResourceUtils.getFile(ServiceApplicationTest.class.getClass().getResource("/test-data.json"));
 			Object obj = parser.parse(new FileReader(file.getAbsolutePath()));
 
 			JSONArray jsonArray =  (JSONArray) obj;
