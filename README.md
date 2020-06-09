@@ -21,7 +21,14 @@ The application is run on localhost.
 * To run the images in containers execute:
 
         docker-compose up
-* Once build and run succeeds goto http://localhost:8081/
+* Once build and run succeeds got:
+
+        http://localhost:8081/
+* Backend is run on: 
+
+        http://localhost:8080
+        # eg: http://localhost:8080/findfoodtrucks?lat=37.792252&lng=-122.403793&count=10
+        
 * You should see your application loaded, clicking refresh will load new results anytime you change location.
 
 #### Using command line
