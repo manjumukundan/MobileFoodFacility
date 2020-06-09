@@ -10,7 +10,7 @@ The application contains a frontend client and backend service. The frontend cli
 The backend service exposes an api that takes users latitude/longitude and the minimum count of trucks/carts.
 The application is run on localhost.
 
-###### Using Docker
+#### Using Docker
 
 * Install Docker in your machine and install the cli for docker.
 * To build the images execute: 
@@ -22,7 +22,7 @@ The application is run on localhost.
 * Once build and run succeeds goto http://localhost:8081/
 * You should see your application loaded, clicking refresh will load new results anytime you change location.
 
-###### Using command line
+#### Using command line
 
 * Install maven and npm in your machine - mvn cli and npm cli.
 * Download the source code.
@@ -51,7 +51,7 @@ The application is run on localhost.
         # can load client by executing
         http://localhost:8081/
         
-###### Running tests
+#### Running tests
 
           # build tests and run tests
           mvn clean test
