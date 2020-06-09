@@ -6,8 +6,9 @@ The application displays minimum 5 or more nearby trucks/carts based on the lati
 
 #### Setup
 
-The application contains a frontend client and backend service. The frontend client displays map view backed by google maps api.
-The backend service exposes an api that takes users latitude/longitude and the minimum count of trucks/carts.
+The application contains a frontend client and backend service. 
+The frontend client is a VueJs application that displays map view backed by google maps api from VueGoogleMaps npm package.
+The backend service is a SpringBoot application that exposes an api that takes users latitude/longitude and the minimum count of trucks/carts.
 The application is run on localhost.
 
 #### Using Docker
