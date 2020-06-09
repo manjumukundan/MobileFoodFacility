@@ -20,7 +20,7 @@ The application is run on localhost.
 * Building images will create images app-service and app-client.
 * To run the images in containers execute:
 
-        docker-image up
+        docker-compose up
 * Once build and run succeeds goto http://localhost:8081/
 * You should see your application loaded, clicking refresh will load new results anytime you change location.
 
