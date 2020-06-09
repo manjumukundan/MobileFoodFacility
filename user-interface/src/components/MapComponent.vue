@@ -1,5 +1,6 @@
 <template>
     <div>
+        <button @click="findFoodTrucks(currentLocation)">Refresh</button>
         <gmap-map ref="mapRef" id="map"
                   :center="currentLocation"
                   :zoom="16"
@@ -46,10 +47,7 @@
                 navigator.geolocation.getCurrentPosition(() => {
                     // position.coords.latitude = 37.792252;
                     // position.coords.longitude = -122.403793
-                    this.currentLocation = {
-                        lat: 37.792252,
-                        lng: -122.403793
-                    };
+                    this.currentLocation = {lat: 37.792252, lng: -122.403793};
 
                     this.map = new this.google.maps.Map(document.getElementById('map'), {
                         zoom: 16,
