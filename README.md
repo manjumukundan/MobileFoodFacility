@@ -15,7 +15,8 @@ The application is run on localhost.
 
 * Install Docker in your machine and install the cli for docker.
 * To build the images execute: 
-    - docker-compose build
+           
+        docker-compose build
 * Building images will create images app-service and app-client.
 * To run the images in containers execute:
 
