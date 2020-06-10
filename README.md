@@ -33,7 +33,7 @@ The application is run on localhost.
 
 #### Using command line
 
-* Install maven and npm in your machine - mvn cli and npm cli.
+* Install maven and npm in your machine - mvn and npm CLI.
 * Download the source code.
 * Goto the project repository execute following to execute backend:
         
