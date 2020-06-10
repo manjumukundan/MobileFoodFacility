@@ -1,6 +1,6 @@
 # MobileFoodFacility
 
-The Mobile Food Facility is simple an application that displays nearby Food trucks and Food carts.
+The Mobile Food Facility is a simple application that displays nearby Food trucks and Food carts from your location.
 The application displays minimum 5 or more nearby trucks/carts based on the latitude and longitude of the position you are in.
 
 
@@ -13,7 +13,7 @@ The application is run on localhost.
 
 #### Using Docker
 
-* Install Docker in your machine and install the cli for docker.
+* Install Docker in your machine and install the CLI for docker.
 * To build the images execute: 
            
         docker-compose build
@@ -33,7 +33,7 @@ The application is run on localhost.
 
 #### Using command line
 
-* Install maven and npm in your machine - mvn cli and npm cli.
+* Install maven and npm in your machine - mvn and npm CLI.
 * Download the source code.
 * Goto the project repository execute following to execute backend:
         
