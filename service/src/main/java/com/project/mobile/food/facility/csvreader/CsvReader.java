@@ -14,10 +14,13 @@ import java.util.List;
 @Component
 public class CsvReader {
 
-    public static List<FoodTruck> processCSV(String filename) throws IOException {
+    public static List<FoodTruck> processCSV() throws IOException {
 
-        CSVReader reader = new CSVReader(new InputStreamReader(CsvReader.class.getResourceAsStream(filename),
-                        "UTF-8"));
+        ClassLoader loader = CsvReader.class.getClassLoader();
+        File file = new File(loader.getResource("static/data.csv").getFile());
+
+        FileInputStream is = new FileInputStream(file.getPath());
+        CSVReader reader = new CSVReader(new InputStreamReader(is, "UTF-8"));
 
         //Read all data.
         List<String[]> allRows = reader.readAll();

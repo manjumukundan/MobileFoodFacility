@@ -32,7 +32,8 @@ class ServiceApplicationTest {
 		JSONParser parser = new JSONParser();
 
 		try {
-			File file = ResourceUtils.getFile(ServiceApplicationTest.class.getClass().getResource("/test-data.json"));
+			ClassLoader loader = ServiceApplicationTest.class.getClassLoader();
+			File file = new File(loader.getResource("test-data.json").getFile());
 			Object obj = parser.parse(new FileReader(file.getAbsolutePath()));
 
 			JSONArray jsonArray =  (JSONArray) obj;

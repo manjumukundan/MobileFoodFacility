@@ -23,7 +23,7 @@ public class ServiceController {
     public List<FoodTruck> getFoodTrucks(@RequestParam("lat") String latitude,
                                          @RequestParam("lng") String longitude,
                                          @RequestParam("count") String count) throws IOException {
-        List<FoodTruck> csvList = csvReader.processCSV("/static/data.csv");
+        List<FoodTruck> csvList = csvReader.processCSV();
         return nearestFoodTrucks.findNearestTrucks(csvList, latitude, longitude, Integer.valueOf(count));
     }
 }
