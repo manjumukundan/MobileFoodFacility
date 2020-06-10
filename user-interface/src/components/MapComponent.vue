@@ -42,7 +42,7 @@
                     zoom: 16,
                     center: new this.google.maps.LatLng(this.currentLocation.lat, this.currentLocation.lng)
                 });
-                this.geolocate();
+                this.setCurrentLocation();
                 this.google.maps.event.addListener(this.map, 'click', e => {
                     this.currentLocation = {lat: e.latLng.lat(), lng: e.latLng.lng()};
                     this.setUserLocation();
@@ -51,7 +51,7 @@
         },
 
         methods: {
-            geolocate: function () {
+            setCurrentLocation: function () {
                 navigator.geolocation.getCurrentPosition(() => {
                     // position.coords.latitude = 37.792252;
                     // position.coords.longitude = -122.403793
@@ -113,7 +113,7 @@
                 });
             },
             setMapOnAll(map) {
-                for (var i = 0; i < this.markers.length; i++) {
+                for (let i = 0; i < this.markers.length; i++) {
                     this.markers[i].setMap(map);
                 }
             },
