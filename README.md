@@ -1,14 +1,18 @@
 # MobileFoodFacility
 
-The Mobile Food Facility is a simple application that displays nearby Food trucks and Food carts from your location.
+The Mobile Food Facility is a simple web application that displays nearby Food trucks and Food carts at your location.
 The application displays minimum 5 or more nearby trucks/carts based on the latitude and longitude of the position you are in.
 
 
 #### Setup
 
 The application contains a frontend client and backend service. 
-The frontend client is a VueJs application that displays map view backed by google maps api from VueGoogleMaps npm package.
-The backend service is a SpringBoot application that exposes an api that takes users latitude/longitude and the minimum count of trucks/carts.
+
+The frontend client is a VueJs application that displays a map view backed by google maps api from VueGoogleMaps npm package.
+We can change our locations by clicking anywhere on the map and the nearby trucks/carts should load accordingly.
+
+The backend service is a SpringBoot application that exposes an api that takes users latitude/longitude and the minimum count of trucks/carts and returns the list of nearby food trucks/carts.
+
 The application is run on localhost.
 
 #### Using Docker
@@ -21,15 +25,14 @@ The application is run on localhost.
 * To run the images in containers execute:
 
         docker-compose up
-* Once build and run succeeds got:
+* Once build and run succeeds goto:
 
         http://localhost:8081/
 * Backend is run on: 
 
         http://localhost:8080
         # eg: http://localhost:8080/findfoodtrucks?lat=37.792252&lng=-122.403793&count=10
-        
-* You should see your application loaded, clicking refresh will load new results anytime you change location.
+       
 
 #### Using command line
 
@@ -69,3 +72,4 @@ The application is run on localhost.
 
 * Make sure you are not in any vpn, as npm install might fail due to timeout.
 * Confirm that .npmrc file has proper registry urls. eg: https://registry.npmjs.com/
+* Make sure you free up ports 8080 and 8081 for the applications to run.
