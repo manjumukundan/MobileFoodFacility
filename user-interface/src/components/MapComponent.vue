@@ -1,8 +1,8 @@
 <template>
     <div>
-        <button @click="findFoodTrucks(currentLocation)">Refresh</button>
         <gmap-map ref="mapRef" id="map"
                   :center="currentLocation"
+                  :clickable="true"
                   :zoom="16"
                   style="width:100%;  height: 100vh;">
         </gmap-map>
@@ -38,7 +38,15 @@
 
         mounted() {
             this.$refs.mapRef.$mapPromise.then(() => {
+                this.map = new this.google.maps.Map(document.getElementById('map'), {
+                    zoom: 16,
+                    center: new this.google.maps.LatLng(this.currentLocation.lat, this.currentLocation.lng)
+                });
                 this.geolocate();
+                this.google.maps.event.addListener(this.map, 'click', e => {
+                    this.currentLocation = {lat: e.latLng.lat(), lng: e.latLng.lng()};
+                    this.setUserLocation();
+                });
             })
         },
 
@@ -48,25 +56,24 @@
                     // position.coords.latitude = 37.792252;
                     // position.coords.longitude = -122.403793
                     this.currentLocation = {lat: 37.792252, lng: -122.403793};
-
-                    this.map = new this.google.maps.Map(document.getElementById('map'), {
-                        zoom: 16,
-                        center: new this.google.maps.LatLng(this.currentLocation.lat, this.currentLocation.lng)
-                    });
-                    let infowindow = new this.google.maps.InfoWindow({
-                        content: 'You are here!'
-                    });
-
-                    let marker = new this.google.maps.Marker({
-                        position: this.currentLocation,
-                        map: this.map,
-                        title: 'You'
-                    });
-                    marker.addListener('click', function () {
-                        infowindow.open(this.map, marker);
-                    });
-                    this.findFoodTrucks(this.currentLocation);
+                    this.setUserLocation();
                 });
+            },
+            setUserLocation() {
+                this.deleteMarkers();
+                let infowindow = new this.google.maps.InfoWindow({
+                    content: 'You are here!'
+                });
+                let marker = new this.google.maps.Marker({
+                    position: this.currentLocation,
+                    map: this.map,
+                    title: 'You'
+                });
+                marker.addListener('click', function () {
+                    infowindow.open(this.map, marker);
+                });
+                this.markers.push(marker);
+                this.findFoodTrucks(this.currentLocation);
             },
             findFoodTrucks(position) {
                 api.findFoodTrucks(position, this.count).then((response) => {
@@ -90,19 +97,35 @@
                                     icon: {
                                         url: image,
                                         origin: new this.google.maps.Point(0, 0),
-                                        anchor: new this.google.maps.Point(17, 34),
-                                        scaledSize: new this.google.maps.Size(30, 30, 0, 0)
+                                        anchor: new this.google.maps.Point(0, 0),
+                                        scaledSize: new this.google.maps.Size(25, 25, 0, 0)
                                     }
                                 });
                                 marker.addListener('click', function () {
                                     infowindow.open(this.map, marker);
                                 });
+                                this.markers.push(marker);
                             })
                         }
                     }
                 }).catch(error => {
                     console.log(error);
                 });
+            },
+            setMapOnAll(map) {
+                for (var i = 0; i < this.markers.length; i++) {
+                    this.markers[i].setMap(map);
+                }
+            },
+            clearMarkers() {
+                this.setMapOnAll(null);
+            },
+            showMarkers() {
+                this.setMapOnAll(this.map);
+            },
+            deleteMarkers() {
+                this.clearMarkers();
+                this.markers = [];
             },
             visit(truck) {
                 console.log("Visited " + truck.name);
