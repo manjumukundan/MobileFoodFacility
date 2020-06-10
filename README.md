@@ -13,7 +13,7 @@ The application is run on localhost.
 
 #### Using Docker
 
-* Install Docker in your machine and install the cli for docker.
+* Install Docker in your machine and install the CLI for docker.
 * To build the images execute: 
            
         docker-compose build
