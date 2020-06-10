@@ -1,6 +1,6 @@
 # MobileFoodFacility
 
-The Mobile Food Facility is simple an application that displays nearby Food trucks and Food carts.
+The Mobile Food Facility is a simple application that displays nearby Food trucks and Food carts from your location.
 The application displays minimum 5 or more nearby trucks/carts based on the latitude and longitude of the position you are in.
 
 
