@@ -18,7 +18,6 @@ a list of nearby food trucks/carts in JSON format.
 The application is run on localhost.
 
 ![GitHub Logo](Design.png)
-Format: ![Alt Text](url)
 
 #### Using Docker
 
