@@ -11,6 +11,7 @@ The application contains a frontend client and a backend service.
 The frontend client is a VueJs application that displays a map view backed by google maps api from VueGoogleMaps npm package.
 
 We can simulate our location change by clicking anywhere on the map and the nearby trucks/carts should be shown accordingly.
+By default when the map loads initially a default San Francisco location is chosen.
 
 The backend service is a SpringBoot application that exposes an api that takes users latitude/longitude and the minimum count of trucks/carts and returns 
 a list of nearby food trucks/carts in JSON format.
