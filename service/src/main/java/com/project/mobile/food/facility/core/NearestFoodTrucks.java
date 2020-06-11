@@ -55,7 +55,7 @@ public class NearestFoodTrucks {
         // if the count of points is greater than what is required, reduce the dataset by reducing radius.
         if(res.size() > count) {
             while(res.size() >= count){
-                radius = radius / 2;
+                radius = radius / 1.1;
                 list = new ArrayList<>(res);
                 res.clear();
                 for (FoodTruck truck : list) {
@@ -69,7 +69,7 @@ public class NearestFoodTrucks {
             // if the count of points is lesser than what is required,
             // increase the dataset by reducing radius to see if there is more
             while(res.size() < count){
-                radius = radius * 2;
+                radius = radius * 1.1;
                 list = new ArrayList<>(res);
                 res.clear();
                 for (FoodTruck truck : list) {

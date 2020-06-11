@@ -16,14 +16,12 @@ public class CsvReader {
 
     public static List<FoodTruck> processCSV() throws IOException {
 
-        ClassLoader loader = CsvReader.class.getClassLoader();
-        File file = new File(loader.getResource("static/data.csv").getFile());
-
-        FileInputStream is = new FileInputStream(file.getPath());
-        CSVReader reader = new CSVReader(new InputStreamReader(is, "UTF-8"));
+        InputStream in = CsvReader.class.getResourceAsStream("/static/data.csv");
+        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        CSVReader csvReader = new CSVReader(reader);
 
         //Read all data.
-        List<String[]> allRows = reader.readAll();
+        List<String[]> allRows = csvReader.readAll();
 
         List<FoodTruck> trucks = new ArrayList<FoodTruck>();
         for(String[] row : allRows){

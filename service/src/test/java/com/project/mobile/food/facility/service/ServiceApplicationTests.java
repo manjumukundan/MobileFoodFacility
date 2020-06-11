@@ -12,10 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.util.ResourceUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -32,9 +29,9 @@ class ServiceApplicationTest {
 		JSONParser parser = new JSONParser();
 
 		try {
-			ClassLoader loader = ServiceApplicationTest.class.getClassLoader();
-			File file = new File(loader.getResource("test-data.json").getFile());
-			Object obj = parser.parse(new FileReader(file.getAbsolutePath()));
+			InputStream in = ServiceApplicationTest.class.getResourceAsStream("/test-data.json");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+			Object obj = parser.parse(reader);
 
 			JSONArray jsonArray =  (JSONArray) obj;
 			for(int i = 0 ; i < jsonArray.size(); i++){
@@ -60,7 +57,7 @@ class ServiceApplicationTest {
 	public void testFindNearestTrucks1() throws IOException {
 		NearestFoodTrucks nearestFoodTrucks = new NearestFoodTrucks();
 		List<FoodTruck> ans = nearestFoodTrucks.findNearestTrucks(list, "37.792252", "-122.403793", 2);
-		assertTrue(ans.size() >= 3);
+		assertTrue(ans.size() >= 2);
 		assertTrue(containsList(37.7922616341775, -122.403485955391)); // "id": "1181500", "name": "John's Catering #5",
 	}
 
@@ -68,7 +65,7 @@ class ServiceApplicationTest {
 	public void testFindNearestTrucks2() throws IOException {
 		NearestFoodTrucks nearestFoodTrucks = new NearestFoodTrucks();
 		List<FoodTruck> ans = nearestFoodTrucks.findNearestTrucks(list, "37.793929", "122.394476", 2);
-		assertTrue(ans.size() >= 3);
+		assertTrue(ans.size() >= 2);
 		assertTrue(containsList(37.7938715071506, -122.394865238621)); // "id": "1181498","name": "John's Catering #5",
 
 	}

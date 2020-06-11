@@ -3,7 +3,7 @@
         <gmap-map ref="mapRef" id="map"
                   :center="currentLocation"
                   :clickable="true"
-                  :zoom="16"
+                  :zoom="18"
                   style="width:100%;  height: 100vh;">
         </gmap-map>
     </div>
@@ -39,7 +39,7 @@
         mounted() {
             this.$refs.mapRef.$mapPromise.then(() => {
                 this.map = new this.google.maps.Map(document.getElementById('map'), {
-                    zoom: 16,
+                    zoom: 18,
                     center: new this.google.maps.LatLng(this.currentLocation.lat, this.currentLocation.lng)
                 });
                 this.setCurrentLocation();
@@ -103,6 +103,7 @@
                                 });
                                 marker.addListener('click', function () {
                                     infowindow.open(this.map, marker);
+                                    this.visit(item);
                                 });
                                 this.markers.push(marker);
                             })
