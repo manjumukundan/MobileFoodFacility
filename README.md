@@ -17,7 +17,8 @@ a list of nearby food trucks/carts in JSON format.
 
 The application is run on localhost.
 
-https://github.com/manjumukundan/MobileFoodFacility/blob/master/Design.png
+![GitHub Logo](Design.png)
+Format: ![Alt Text](url)
 
 #### Using Docker
 
