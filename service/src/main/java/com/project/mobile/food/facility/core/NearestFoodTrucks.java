@@ -65,26 +65,24 @@ public class NearestFoodTrucks {
                     }
                 }
             }
+            return list;
         } else if(res.size() < count) {
             // if the count of points is lesser than what is required,
             // increase the dataset by reducing radius to see if there is more
             while(res.size() < count){
                 radius = radius * 1.1;
-                list = new ArrayList<>(res);
                 res.clear();
                 for (FoodTruck truck : list) {
                     Double dist = FoodTruck.doHaversineAlgorithm(currLatitude, currLongitude, truck.getLatitude(), truck.getLongitude());
-                    if (dist <= radius) {
+                    if (res.size() < count && dist <= radius) {
                         res.add(truck);
                     }
                 }
             }
+            return res;
         } else {
             return res;
         }
-
-        // can sort this list to retrieve exact count.
-        return list;
 
         // Sort list based on distance between points and user location and then get first count.
 //        List<FoodTruck> csvList1 = new ArrayList<>(csvList);
