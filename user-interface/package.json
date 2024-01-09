@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@babel/runtime-corejs2": "^7.4.3",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "2.15.0",
     "@popperjs/core": "2.4.0",
